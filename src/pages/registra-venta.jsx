@@ -82,7 +82,7 @@ export default function SalesSystem() {
             </TableHeader>
             <TableBody>
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-gray-500">
+                <TableCell colSpan={0} className="text-center text-gray-500">
                   No hay productos en el carrito.
                 </TableCell>
               </TableRow>

@@ -25,17 +25,17 @@ export default function BusquedaProductoUI() {
 
         <div className="campo">
           <label className="campo-label">Precio Unitario</label>
-          <span className="info-texto">S/ 9.00</span>
+          <span className="info-texto">S/ 0.00</span>
         </div>
 
         <div className="campo">
           <label className="campo-label">Precio Mayorista</label>
-          <span className="info-texto">S/ 8.00</span>
+          <span className="info-texto">S/ 0.00</span>
         </div>
 
         <div className="campo">
           <label className="campo-label">Stock Disponible</label>
-          <span className="info-texto">15</span>
+          <span className="info-texto">0</span>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api-venta-laravel.up.railway.app/api',
+  baseURL: import.meta.env.VITE_API_URL, // Cambiar process.env por import.meta.env
   headers: {
     'Content-Type': 'application/json',
   },

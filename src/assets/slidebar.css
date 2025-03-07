@@ -1,0 +1,57 @@
+
+.sidebar {
+  width: 60px; /* Ancho del menú */
+  height: 1000vh;
+  background-color: #2c3e50; /* Color de fondo oscuro */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.sidebar-option {
+  width: 100%;
+  padding: 15px 0;
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sidebar-option:hover {
+  background-color: #34495e; /* Efecto hover */
+}
+
+.icon {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+/* Ajustes para que el contenido principal ocupe todo el espacio */
+.app-container {
+  display: flex;
+  height: 100vh; /* Ocupa toda la pantalla */
+  width: 100vw; /* Ocupa todo el ancho disponible */
+}
+
+
+.main-content {
+  flex-grow: 1; /* Se expande para ocupar el espacio restante */
+  padding: 0px;
+  background: #1f6199; /* Color de fondo azul */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea el contenido a la izquierda */
+  justify-content: flex-start; /* Alinea el contenido arriba */
+  min-height: 1000vh;
+  width: calc(100vw - 60px); /* Resta el ancho del sidebar */
+}
+
+
+
+
+

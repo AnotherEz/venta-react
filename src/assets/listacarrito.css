@@ -1,0 +1,38 @@
+.carrito-lista-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 1200px;
+  }
+  
+  .titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+  }
+  
+  .tabla-carrito {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .tabla-carrito th, 
+  .tabla-carrito td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .tabla-carrito thead {
+    background: #f1f1f1;
+    font-weight: bold;
+  }
+  
+  .tabla-carrito tbody tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+  

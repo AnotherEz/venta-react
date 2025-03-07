@@ -1,0 +1,95 @@
+/* Estilos generales */
+.metodo-pago-container {
+    background: linear-gradient(to right, #f9f9f9, #ffffff);
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ocupará todo el ancho disponible */
+    max-width: 1200px; /* Evita que se extienda demasiado */
+    margin: 10px 10px; /* Centrado sin márgenes extra */
+}
+
+/* Título */
+.titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Contenedor del formulario */
+.formulario {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Ajustable a cualquier tamaño */
+    gap: 15px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Estilos para cada grupo de input */
+.grupo {
+    display: flex;
+    flex-direction: column;
+    min-width: 170px; /* Se ajusta mejor a diferentes pantallas */
+    flex-grow: 1; /* Evita que los inputs se sobreexpandan */
+}
+
+/* Etiquetas */
+.grupo label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+/* Inputs y selects */
+input,
+select {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    width: 100%; /* Evita que se corten en pantallas más pequeñas */
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+input[disabled],
+select[disabled] {
+    background: #eaeaea;
+    cursor: not-allowed;
+}
+
+/* Subtexto debajo del input */
+.subtexto {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Sección de vuelto */
+.vuelto-container {
+    margin-top: -40px;
+    margin-right: -160px;
+    display: flex; /* Hace que los elementos estén en la misma línea */
+    align-items: center; /* Alinea verticalmente */
+    justify-content: flex-end; /* Alinea a la derecha (ajústalo según el diseño) */
+    grid-column: span 4;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Estilo del monto del vuelto */
+.vuelto-monto {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-left: 15px; /* Espacio entre el texto y el monto */
+}

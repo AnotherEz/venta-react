@@ -1,0 +1,126 @@
+.busqueda-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+  }
+  
+  .input-busqueda {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  /* Sección de detalles del producto */
+  .detalle-producto {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  /* Cada campo alineado correctamente */
+  .campo {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  /* Etiqueta superior de cada campo */
+  .campo-label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
+  /* Información del producto SIN contenedores */
+  .info-texto {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    margin-top: 5px;
+  }
+  
+  /* Input de cantidad con buen diseño */
+  .cantidad-input {
+    padding: 8px;
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  /* Sección de botones y descripción */
+  .extra-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  /* Botones */
+  .botones {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .agregar {
+    background: #28a745;
+    color: white;
+  }
+  
+  .agregar:hover {
+    background: #218838;
+  }
+  
+  .eliminar {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .eliminar:hover {
+    background: #c82333;
+  }
+  
+  /* Descripción */
+  .descripcion {
+    flex: 1;
+    padding-left: 20px;
+  }
+  
+  .descripcion .campo-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .descripcion-texto {
+    font-size: 0.9rem;
+    color: #555;
+    background: #f9f9f9;
+    padding: 8px;
+    border-radius: 5px;
+  }
+  

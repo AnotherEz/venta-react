@@ -1,7 +1,7 @@
 /* Estilos generales */
 .metodo-pago-container {
     background: linear-gradient(to right, #f9f9f9, #ffffff);
-    padding: 5px;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%; /* Ocupará todo el ancho disponible */

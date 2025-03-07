@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import MetodoPago from "../components/componentes";
 import Sidebar from "../components/slidebar";
 import CarritoUI from "../components/carrito";
+import Home from "../pages/home";
+import ReporteVentasUI from "../pages/reportes";
 /* import Header from "../components/templates/Header";
 import Default from "../components/templates/Default";
 import Footer from "../components/templates/Footer";
@@ -17,14 +19,34 @@ const AppRoutes = () => {
   return (
     <Routes>
         <Route path="/" element={
-  <div className="app-container">
-    <Sidebar />
-    <div className="main-content">
-      <MetodoPago />
-      <CarritoUI />
-    </div>
-  </div>
-} />
+          <div className="app-container">
+            <Sidebar />
+            <div className="main-content">
+              <Home />
+            </div>
+          </div>
+            } />
+
+      <Route path="/ventas" element={
+          <div className="app-container">
+            <Sidebar />
+            <div className="main-content">
+              <MetodoPago />
+              <CarritoUI />
+            </div>
+          </div>
+            } />
+
+        <Route path="/reportes" element={
+          <div className="app-container">
+            <Sidebar />
+            <div className="main-content">
+              <ReporteVentasUI />
+            </div>
+          </div>
+            } />
+
+
       {/* <Route path="*" element={<Default />} />
       <Route path="/" element={<><Header /><Home /><Footer /></>} />
       <Route path="/servicios" element={<><Header /><Servicios /><Footer /></>} />

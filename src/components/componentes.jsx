@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { obtenerDatosPorDni } from "./../services/reniecService";
 import "./../assets/metpago.css"; // Importamos el CSS
 
 export default function MetodoPago() {
@@ -6,6 +7,7 @@ export default function MetodoPago() {
   const [tipoVenta, setTipoVenta] = useState("Venta rápida");
   const [tipoPago, setTipoPago] = useState("Efectivo");
   const [dniRuc, setDniRuc] = useState("");
+  const [nombreCliente, setNombreCliente] = useState(""); // Para almacenar el nombre autocompletado
   const [montoEfectivo, setMontoEfectivo] = useState("");
   const [montoTarjeta, setMontoTarjeta] = useState("");
   const [carritoVacio, setCarritoVacio] = useState(true);
@@ -24,6 +26,7 @@ export default function MetodoPago() {
 
     if (selectedTipoVenta === "Venta rápida") {
       setDniRuc("");
+      setNombreCliente("");
     }
   };
 
@@ -47,6 +50,23 @@ export default function MetodoPago() {
     setVuelto(efectivo > totalCompra ? efectivo - totalCompra : 0);
   };
 
+  // 🔍 Buscar DNI/RUC en la API de RENIEC
+  const handleBuscarDniRuc = async (e) => {
+    const dniIngresado = e.target.value;
+    setDniRuc(dniIngresado);
+
+    if (dniIngresado.length === 8) { // Solo consulta si son 8 dígitos (DNI)
+      const data = await obtenerDatosPorDni(dniIngresado);
+      if (data && !data.error) {
+        setNombreCliente(`${data.nombres} ${data.apellido_paterno} ${data.apellido_materno}`);
+      } else {
+        setNombreCliente("DNI no encontrado");
+      }
+    } else {
+      setNombreCliente(""); // Limpia si no es válido
+    }
+  };
+
   return (
     <div className="metodo-pago-container">
       <h2 className="titulo">Método de pago</h2>
@@ -66,11 +86,12 @@ export default function MetodoPago() {
           <input
             type="text"
             value={dniRuc}
-            onChange={(e) => setDniRuc(e.target.value)}
+            onChange={handleBuscarDniRuc}
             disabled={dniRucDisabled}
             placeholder="Ingresa DNI / RUC"
+            maxLength={11} // Puede ser DNI (8) o RUC (11)
           />
-          <p className="subtexto">Nombre/Razón social</p>
+          <p className="subtexto">{nombreCliente || "Nombre/Razón social"}</p>
         </div>
 
         {/* Tipo de Pago y Montos */}

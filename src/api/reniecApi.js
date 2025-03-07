@@ -1,4 +1,4 @@
-import api from '../apiconfig';
+import api from './apiconfig';
 
 export const buscarDni = async (dni) => {
     try {

@@ -1,0 +1,103 @@
+.boleta-container {
+    width: 270px;
+    background: white;
+    border: 1px solid black;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: black;
+    text-align: center;
+    margin: auto;
+  }
+  
+  /* ENCABEZADO */
+  .boleta-header {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .boleta-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .boleta-header p {
+    margin: 2px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: black !important;
+  }
+  
+  /* PRODUCTOS */
+  .boleta-productos {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .producto {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: black !important;
+  }
+  
+  /* TOTALES */
+  .boleta-totales {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .boleta-totales p {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: black !important;
+  }
+  
+  /* CLIENTE */
+  .boleta-cliente {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .boleta-cliente p {
+    font-size: 12px;
+    margin: 3px 0;
+    font-weight: bold;
+    color: black !important;
+  }
+  
+  /* QR */
+  .boleta-qr {
+    text-align: center;
+  }
+  
+  .boleta-qr img {
+    width: 70px;
+    height: 70px;
+    margin-top: 5px;
+    display: block;
+    border: 1px solid black;
+  }
+  
+  /* MENSAJE FINAL */
+  .mensaje-final {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: bold;
+    color: black !important;
+  }
+  

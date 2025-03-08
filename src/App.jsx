@@ -1,8 +1,15 @@
-import "./assets/App.css";
-import AppRoutes from "./routes/routes";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import './assets/main.css';
+import AppRoutes from './routes/routes';
 
-function App() {
-  return <AppRoutes />;
-}
+const root = createRoot(document.getElementById('root'));
 
-export default App;
+root.render(
+  <StrictMode>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  </StrictMode>
+);

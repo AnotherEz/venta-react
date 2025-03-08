@@ -4,55 +4,65 @@ import Sidebar from "../components/slidebar";
 import CarritoUI from "../components/carrito";
 import Home from "../pages/home";
 import ReporteVentasUI from "../pages/reportes";
-/* import Header from "../components/templates/Header";
-import Default from "../components/templates/Default";
-import Footer from "../components/templates/Footer";
-import Home from "../pages/Informative/Home";
-import Servicios from "../pages/Informative/Home";
-import Login from "../pages/Auth/login";
-import Register from "../pages/Auth/register";
-import Dashboard from "../pages/User/dashboard";
- */
-
+import Boleta from "../components/comprobante"; // Importamos el componente de la boleta
 
 const AppRoutes = () => {
+  // Datos de prueba para la boleta
+  const datosBoleta = {
+    empresa: {
+      nombre: "TIENDA ABARROTES S.A.C.",
+      ruc: "20283729683",
+      direccion: "AV. SÁNCHEZ CERRO 4129",
+      ciudad: "PIURA - PIURA - CASTILLA",
+    },
+    tipoDocumento: "BOLETA",
+    fecha: "01/03/2025",
+    hora: "04:37:12",
+    productos: [
+      { descripcion: "Arroz Extra 5kg", precio: 30.00 },
+    ],
+    subtotal: 30.00,
+    descuento: 0.50,
+    total: 29.50,
+    cajero: "Edison Fernández",
+    dni: "74839843", // Si hay DNI, se muestra como boleta con cliente
+    ruc: "", // Si hay RUC, se convierte en factura
+    razonSocial: "",
+    codigoVenta: "02",
+    referencia: "Ref:798776",
+    qrUrl: "https://via.placeholder.com/80", // Código QR de prueba
+  };
+
   return (
     <Routes>
-        <Route path="/" element={
-          <div className="app-container">
-            <Sidebar />
-            <div className="main-content">
-              <Home />
-            </div>
+      <Route path="/" element={
+        <div className="app-container">
+          <Sidebar />
+          <div className="main-content">
+            <Home />
           </div>
-            } />
+        </div>
+      } />
 
       <Route path="/ventas" element={
-          <div className="app-container">
-            <Sidebar />
-            <div className="main-content">
-              <MetodoPago />
-              <CarritoUI />
-            </div>
+        <div className="app-container">
+          <Sidebar />
+          <div className="main-content">
+            <MetodoPago />
+            <CarritoUI />
+            <Boleta datos={datosBoleta} /> {/* Enviamos los datos de la boleta */}
           </div>
-            } />
+        </div>
+      } />
 
-        <Route path="/reportes" element={
-          <div className="app-container">
-            <Sidebar />
-            <div className="main-content">
-              <ReporteVentasUI />
-            </div>
+      <Route path="/reportes" element={
+        <div className="app-container">
+          <Sidebar />
+          <div className="main-content">
+            <ReporteVentasUI />
           </div>
-            } />
-
-
-      {/* <Route path="*" element={<Default />} />
-      <Route path="/" element={<><Header /><Home /><Footer /></>} />
-      <Route path="/servicios" element={<><Header /><Servicios /><Footer /></>} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/register" element={<Register />} /> */}
+        </div>
+      } />
     </Routes>
   );
 };

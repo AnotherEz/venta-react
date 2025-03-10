@@ -1,19 +1,211 @@
-.lista-sugerencias {
-  background: white;
-  border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  z-index: 10;
+/* 📌 Contenedor principal */
+.busqueda-container {
+  position: relative;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 1200px;
 }
 
+/* 📌 Lista de sugerencias */
+.lista-sugerencias {
+  position: absolute;
+  top: calc(100 + 7px); /* Justo debajo del input */
+  left: 15px;
+  width: 97.5%; /* Mismo ancho que el input */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000; /* Asegurar que esté sobre otros elementos */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 📌 Elementos de la lista */
 .lista-sugerencias li {
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  transition: background 0.2s ease-in-out;
 }
 
+/* 📌 Cambio de color al pasar el mouse */
 .lista-sugerencias li:hover {
   background: #f0f0f0;
 }
+
+/* 📌 Título */
+.titulo {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+}
+
+/* 📌 Contenedor de la barra de búsqueda */
+.busqueda-barra {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* 📌 Input de búsqueda */
+.input-busqueda {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  padding-right: 40px; /* Espacio para el icono de la lupa */
+}
+
+/* 📌 Botón de búsqueda */
+.btn-buscar {
+  position: absolute;
+  right: 10px;
+  border: none;
+  background: none;
+  cursor: default;
+  font-size: 1.3rem;
+  color: #aaa;
+  transition: color 0.3s;
+}
+
+/* 📌 Cuando el botón está activado */
+.btn-buscar.activo {
+  cursor: pointer;
+  color: #007bff;
+}
+
+.btn-buscar.activo:hover {
+  color: #0056b3;
+}
+
+/* 📌 Sección de detalles del producto */
+.detalle-producto {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 5px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9f9;
+  max-width: 100%;
+}
+
+/* 📌 Contenedor flexible */
+.producto-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+
+/* 📌 Cada campo alineado correctamente */
+.campo {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  flex: 1;
+  min-width: 100px;
+   margin-bottom: -15px;
+ 
+}
+
+/* 📌 Etiqueta superior de cada campo */
+.campo-label {
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-top: -12px;
+  color: #333;
+}
+
+/* 📌 Información del producto */
+.info-texto {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #000;
+  margin-top: 3px;
+  
+}
+
+/* 📌 Input de cantidad */
+.cantidad-input {
+  padding: 8px;
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #ffffff;
+}
+
+/* 📌 Contenedor de descripción del producto (Colocado abajo) */
+.descripcion {
+  
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #ffffff;
+  width: 600px;
+  text-align: left;
+  margin-left: 600px;
+  margin-bottom: -25px;
+
+}
+
+/* 📌 Botones alineados a la izquierda */
+.botones-agregar {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: -53px;
+}
+
+/* 📌 Botón de agregar */
+.btn-agregar {
+  background: #28a745;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  min-width: 200px;
+  font-size: 1rem;
+}
+
+.btn-agregar:hover {
+  background: #218838;
+}
+
+/* 📌 Botón de eliminar */
+.btn-eliminar {
+  background: #dc3545;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  min-width: 200px;
+  font-size: 1rem;
+}
+
+.btn-eliminar:hover {
+  background: #c82333;
+}
+

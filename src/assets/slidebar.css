@@ -40,6 +40,7 @@
 
 
 .main-content {
+  position: relative;
   flex-grow: 1; /* Se expande para ocupar el espacio restante */
   padding: 0px;
   background: #1f6199; /* Color de fondo azul */

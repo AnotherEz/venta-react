@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { obtenerProductos, buscarProductos } from "./../services/productoService";
-import "./../assets/busqproduct.css"; // Estilos del componente
+import { agregarProductoAlCarrito, eliminarProductoDelCarrito } from "./../services/carritoService";
+import "./../assets/busqproduct.css"; 
 
-export default function BusquedaProductoUI() {
-  const [productos, setProductos] = useState([]); // Todos los productos precargados
-  const [filtroProductos, setFiltroProductos] = useState([]); // Lista filtrada en tiempo real
-  const [productoSeleccionado, setProductoSeleccionado] = useState(null); // Producto final seleccionado
-  const [query, setQuery] = useState(""); // Texto de búsqueda
-  const [loading, setLoading] = useState(false); // Estado de carga
+export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
+  const [productos, setProductos] = useState([]);
+  const [filtroProductos, setFiltroProductos] = useState([]);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [mostrarBotonBuscar, setMostrarBotonBuscar] = useState(false);
+  const [cantidad, setCantidad] = useState(1);
 
-  // 🔹 Cargar todos los productos al inicio para filtrar en el frontend
+  // 🔹 Cargar todos los productos al inicio para filtrar en frontend
   useEffect(() => {
     const cargarProductos = async () => {
       setLoading(true);
@@ -17,26 +20,25 @@ export default function BusquedaProductoUI() {
         const productosAPI = await obtenerProductos();
         setProductos(productosAPI);
       } catch (error) {
-        console.error("Error al cargar productos:", error);
+        console.error("⚠️ Error al cargar productos:", error);
       } finally {
         setLoading(false);
       }
     };
-
     cargarProductos();
   }, []);
 
-  // 🔹 Filtrar productos en tiempo real a medida que escribe
+  // 🔹 Filtrar productos en tiempo real
   const handleInputChange = (e) => {
     const value = e.target.value;
     setQuery(value);
 
     if (value.trim() === "") {
       setFiltroProductos([]);
+      setMostrarBotonBuscar(false);
       return;
     }
 
-    // Filtrar en frontend
     const resultados = productos.filter((prod) =>
       prod.nombre_producto.toLowerCase().includes(value.toLowerCase()) ||
       prod.codigo.toLowerCase().includes(value.toLowerCase()) ||
@@ -44,33 +46,61 @@ export default function BusquedaProductoUI() {
     );
 
     setFiltroProductos(resultados);
+    setMostrarBotonBuscar(resultados.length === 0);
   };
 
-  // 🔹 Buscar en la API si el usuario no encuentra lo que busca
+  // 🔹 Buscar en API si no hay coincidencias en frontend
   const handleBuscarEnAPI = async () => {
     if (!query.trim()) return;
-
     setLoading(true);
     try {
-      const result = await buscarProductos(query);
-      if (result.length > 0) {
-        setFiltroProductos(result);
-      } else {
-        alert("Producto no encontrado.");
-        setFiltroProductos([]);
-      }
+      const result = await buscarProductos({ nombre: query, codigo: query, categoria: query });
+      setFiltroProductos(result.length > 0 ? result : []);
+      setMostrarBotonBuscar(result.length === 0);
     } catch (error) {
-      alert("Error al buscar producto.");
+      alert("⚠️ Error al buscar producto.");
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔹 Seleccionar un producto de la lista
+  // 🔹 Seleccionar un producto
   const handleSeleccionarProducto = (producto) => {
     setProductoSeleccionado(producto);
-    setQuery(producto.nombre_producto); // Mostrar el nombre en la barra de búsqueda
-    setFiltroProductos([]); // Ocultar sugerencias
+    setQuery(producto.nombre_producto);
+    setFiltroProductos([]);
+    setCantidad(1); 
+  };
+
+  // 🔹 Agregar al carrito
+  const handleAgregarAlCarrito = async () => {
+    if (!productoSeleccionado || cantidad < 1) return;
+    try {
+      await agregarProductoAlCarrito(clienteId, { ...productoSeleccionado, cantidad });
+      limpiarSeleccion();
+      actualizarCarrito();
+    } catch (error) {
+      alert("⚠️ Error al agregar producto.");
+    }
+  };
+
+  // 🔹 Eliminar del carrito
+  const handleEliminarDelCarrito = async () => {
+    if (!productoSeleccionado) return;
+    try {
+      await eliminarProductoDelCarrito(clienteId, productoSeleccionado.id);
+      limpiarSeleccion();
+      actualizarCarrito();
+    } catch (error) {
+      alert("⚠️ Error al eliminar producto.");
+    }
+  };
+
+  // 🔹 Limpiar selección después de agregar/eliminar producto
+  const limpiarSeleccion = () => {
+    setProductoSeleccionado(null);
+    setQuery("");
+    setCantidad(1);
   };
 
   return (
@@ -79,15 +109,9 @@ export default function BusquedaProductoUI() {
 
       {/* Barra de búsqueda */}
       <div className="busqueda-barra">
-        <input
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          placeholder="🔍 Escriba el código, nombre o palabra clave..."
-          className="input-busqueda"
-        />
-        <button onClick={handleBuscarEnAPI} disabled={loading} className="btn-buscar">
-          {loading ? "Buscando..." : "Buscar"}
+        <input type="text" value={query} onChange={handleInputChange} placeholder="🔍 Escriba el código, nombre o palabra clave..." className="input-busqueda" />
+        <button onClick={handleBuscarEnAPI} disabled={!mostrarBotonBuscar} className={`btn-buscar ${mostrarBotonBuscar ? "activo" : "icono"}`}>
+          🔍
         </button>
       </div>
 
@@ -102,41 +126,50 @@ export default function BusquedaProductoUI() {
         </ul>
       )}
 
-      {/* Sección de detalles del producto seleccionado */}
+      {/* Información del producto seleccionado */}
       {productoSeleccionado && (
         <div className="detalle-producto">
-          <div className="campo">
-            <label className="campo-label">Cantidad</label>
-            <input type="number" min="1" defaultValue="1" className="cantidad-input" />
+          <div className="producto-info">
+            <div className="campo">
+              <label className="campo-label">Cantidad</label>
+              <input type="number" min="1" value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value, 10))} className="cantidad-input" />
+            </div>
+
+            <div className="campo">
+              <label className="campo-label">Categoría</label>
+              <span className="info-texto">{productoSeleccionado.categoria}</span>
+            </div>
+
+            <div className="campo">
+              <label className="campo-label">Precio Unitario</label>
+              <span className="info-texto">S/ {parseFloat(productoSeleccionado.precio_unitario).toFixed(2)}</span>
+            </div>
+
+            <div className="campo">
+              <label className="campo-label">Precio Mayorista</label>
+              <span className="info-texto">S/ {parseFloat(productoSeleccionado.precio_mayorista).toFixed(2)}</span>
+            </div>
+
+            <div className="campo">
+              <label className="campo-label">Stock Disponible</label>
+              <span className="info-texto">{productoSeleccionado.stock_disponible}</span>
+            </div>
           </div>
 
-          <div className="campo">
-            <label className="campo-label">Categoría</label>
-            <span className="info-texto">{productoSeleccionado.categoria}</span>
-          </div>
-
-          <div className="campo">
-            <label className="campo-label">Precio Unitario</label>
-            <span className="info-texto">
-              S/ {parseFloat(productoSeleccionado.precio_unitario).toFixed(2)}
-            </span>
-          </div>
-
-          <div className="campo">
-            <label className="campo-label">Precio Mayorista</label>
-            <span className="info-texto">
-              S/ {parseFloat(productoSeleccionado.precio_mayorista).toFixed(2)}
-            </span>
-          </div>
-
-          <div className="campo">
-            <label className="campo-label">Stock Disponible</label>
-            <span className="info-texto">{productoSeleccionado.stock_disponible}</span>
-          </div>
-
+          {/* Descripción del producto */}
           <div className="descripcion">
             <label className="campo-label">Descripción del producto:</label>
             <p className="descripcion-texto">{productoSeleccionado.descripcion}</p>
+          </div>
+
+          {/* Botones de acción abajo */}
+          <div className="botones-agregar">
+            <button className="btn-agregar" onClick={handleAgregarAlCarrito} disabled={!productoSeleccionado}>
+              Agregar producto al carrito
+            </button>
+            <button className="btn-eliminar" onClick={handleEliminarDelCarrito} disabled={!productoSeleccionado}>
+              Eliminar producto
+            </button>
           </div>
         </div>
       )}

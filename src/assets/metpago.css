@@ -1,5 +1,6 @@
 /* Estilos generales */
 .metodo-pago-container {
+    position: relative;
     background: linear-gradient(to right, #f9f9f9, #ffffff);
     padding: 10px;
     border-radius: 8px;
@@ -7,6 +8,7 @@
     width: 100%; /* Ocupará todo el ancho disponible */
     max-width: 1200px; /* Evita que se extienda demasiado */
     margin: 10px 10px; /* Centrado sin márgenes extra */
+    margin-bottom: -5px;
 }
 
 /* Título */
@@ -69,15 +71,17 @@ select[disabled] {
 
 /* Subtexto debajo del input */
 .subtexto {
+    width: 900px;
     font-size: 0.9rem;
     color: #666;
     margin-top: 10px;
+    margin-bottom: -17px;
 }
 
 /* Sección de vuelto */
 .vuelto-container {
-    margin-top: -40px;
-    margin-right: -160px;
+    margin-top: -30px;
+    margin-right: -60px;
     display: flex; /* Hace que los elementos estén en la misma línea */
     align-items: center; /* Alinea verticalmente */
     justify-content: flex-end; /* Alinea a la derecha (ajústalo según el diseño) */
@@ -91,5 +95,6 @@ select[disabled] {
 .vuelto-monto {
     font-size: 1.5rem;
     color: #007bff;
-    margin-left: 15px; /* Espacio entre el texto y el monto */
+    margin-left: 15px;
+     
 }

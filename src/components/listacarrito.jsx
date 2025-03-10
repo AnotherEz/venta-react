@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from "react";
-import { obtenerCarritoPorCliente, agregarProductoAlCarrito, vaciarCarrito } from "./../services/carritoService"; // Importamos el servicio
+import { obtenerCarritoPorCliente, agregarProductoAlCarrito, eliminarProductoDelCarrito } from "./../services/carritoService"; // Servicios API
 import "./../assets/carrito.css"; // Estilos del carrito
 
 export default function ListaCarritoUI({ clienteId }) {
@@ -7,10 +8,9 @@ export default function ListaCarritoUI({ clienteId }) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Obtener el carrito cuando el clienteId cambie
   useEffect(() => {
     const fetchCarrito = async () => {
-      if (!clienteId) return; // Si no hay cliente, no buscar el carrito
+      if (!clienteId) return;
 
       try {
         setLoading(true);
@@ -31,32 +31,57 @@ export default function ListaCarritoUI({ clienteId }) {
     };
 
     fetchCarrito();
-  }, [clienteId]); // Se ejecuta cada vez que cambia el clienteId
+  }, [clienteId]);
 
-  // Función para agregar un producto al carrito
-  const handleAgregarProducto = async (producto) => {
+  // 🔹 Incrementar cantidad de un producto
+  const handleIncrementarCantidad = async (producto) => {
     try {
-      const response = await agregarProductoAlCarrito(clienteId, producto);
+      const response = await agregarProductoAlCarrito(clienteId, { ...producto, cantidad: 1 });
       if (response) {
-        // Actualizar el estado del carrito
-        setCarrito([...carrito, response]);
-        setTotal((prevTotal) => prevTotal + response.subtotal);
+        setCarrito((prevCarrito) =>
+          prevCarrito.map((item) =>
+            item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
+          )
+        );
+        setTotal((prevTotal) => prevTotal + producto.precio_unitario);
       }
     } catch (error) {
-      alert("Error al agregar el producto al carrito.");
+      alert("Error al agregar producto.");
     }
   };
 
-  // Función para vaciar el carrito
-  const handleVaciarCarrito = async () => {
+  // 🔹 Reducir cantidad de un producto
+  const handleReducirCantidad = async (producto) => {
+    if (producto.cantidad === 1) {
+      // Si la cantidad es 1, eliminar producto
+      handleEliminarProducto(producto.id);
+    } else {
+      try {
+        const response = await agregarProductoAlCarrito(clienteId, { ...producto, cantidad: -1 });
+        if (response) {
+          setCarrito((prevCarrito) =>
+            prevCarrito.map((item) =>
+              item.id === producto.id ? { ...item, cantidad: item.cantidad - 1 } : item
+            )
+          );
+          setTotal((prevTotal) => prevTotal - producto.precio_unitario);
+        }
+      } catch (error) {
+        alert("Error al reducir producto.");
+      }
+    }
+  };
+
+  // 🔹 Eliminar producto completamente del carrito
+  const handleEliminarProducto = async (productoId) => {
     try {
-      const success = await vaciarCarrito(clienteId);
-      if (success) {
-        setCarrito([]);
-        setTotal(0);
+      const response = await eliminarProductoDelCarrito(clienteId, productoId);
+      if (response) {
+        setCarrito((prevCarrito) => prevCarrito.filter((item) => item.id !== productoId));
+        setTotal((prevTotal) => prevTotal - response.subtotal);
       }
     } catch (error) {
-      alert("Error al vaciar el carrito.");
+      alert("Error al eliminar el producto.");
     }
   };
 
@@ -64,7 +89,6 @@ export default function ListaCarritoUI({ clienteId }) {
     <div className="carrito-lista-container">
       <h2 className="titulo">Carrito</h2>
 
-      {/* Loader mientras se carga el carrito */}
       {loading ? (
         <p className="loading-text">Cargando carrito...</p>
       ) : carrito.length === 0 ? (
@@ -80,6 +104,7 @@ export default function ListaCarritoUI({ clienteId }) {
                 <th>Cantidad</th>
                 <th>Precio x Unidad</th>
                 <th>Subtotal</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -91,20 +116,18 @@ export default function ListaCarritoUI({ clienteId }) {
                   <td>{producto.cantidad}</td>
                   <td>{producto.precio_unitario ? `S/ ${producto.precio_unitario.toFixed(2)}` : "S/ 0.00"}</td>
                   <td>{producto.subtotal ? `S/ ${producto.subtotal.toFixed(2)}` : "S/ 0.00"}</td>
+                  <td>
+                    <button className="btn-menos" onClick={() => handleReducirCantidad(producto)}>-</button>
+                    <button className="btn-mas" onClick={() => handleIncrementarCantidad(producto)}>+</button>
+                    <button className="btn-eliminar" onClick={() => handleEliminarProducto(producto.id)}>🗑️</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {/* Mostrar el total de la compra */}
           <div className="total">
             <div>Total: <strong>S/ {total.toFixed(2)}</strong></div>
-          </div>
-
-          {/* Botones de acción */}
-          <div className="acciones-carrito">
-            <button className="btn-agregar" onClick={() => handleAgregarProducto({ codigo: "12345", nombre: "Producto demo", cantidad: 1, precio_unitario: 10 })}>Agregar Producto de Ejemplo</button>
-            <button className="btn-vaciar" onClick={handleVaciarCarrito}>Vaciar Carrito</button>
           </div>
         </>
       )}

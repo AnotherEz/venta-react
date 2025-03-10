@@ -51,21 +51,21 @@ export default function MetodoPago() {
   };
 
   // 🔍 Buscar DNI/RUC en la API de RENIEC
-  const handleBuscarDniRuc = async (e) => {
-    const dniIngresado = e.target.value;
-    setDniRuc(dniIngresado);
+const handleBuscarDniRuc = async (e) => {
+  const dniIngresado = e.target.value;
+  setDniRuc(dniIngresado);
 
-    if (dniIngresado.length === 8) { // Solo consulta si son 8 dígitos (DNI)
+  if (dniIngresado.length === 8) { // Solo consulta si son 8 dígitos (DNI)
       const data = await obtenerDatosPorDni(dniIngresado);
-      if (data && !data.error) {
-        setNombreCliente(`${data.nombres} ${data.apellido_paterno} ${data.apellido_materno}`);
+      if (data) {
+          setNombreCliente(data); // 📌 Guardar directamente `nombre_cliente`
       } else {
-        setNombreCliente("DNI no encontrado");
+          setNombreCliente("DNI no encontrado");
       }
-    } else {
+  } else {
       setNombreCliente(""); // Limpia si no es válido
-    }
-  };
+  }
+};
 
   return (
     <div className="metodo-pago-container">
@@ -91,7 +91,7 @@ export default function MetodoPago() {
             placeholder="Ingresa DNI / RUC"
             maxLength={11} // Puede ser DNI (8) o RUC (11)
           />
-          <p className="subtexto">{nombreCliente || "Nombre/Razón social"}</p>
+          <p className="subtexto">{"Nombre/Razón social: "+nombreCliente || "Nombre/Razón social"}</p>
         </div>
 
         {/* Tipo de Pago y Montos */}

@@ -4,6 +4,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 1200px;
+  margin-top: -30px;
 }
 
 .titulo {
@@ -38,6 +39,7 @@
 
 
 .carrito-container {
+  position: relative;
     background: linear-gradient(to right, #f9f9f9, #ffffff);
     padding: 0px;
     border-radius: 8px;
@@ -46,3 +48,60 @@
     margin: 10px;
   }
   
+  /* Tabla del carrito */
+.tabla-carrito {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabla-carrito th,
+.tabla-carrito td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.tabla-carrito th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+/* Botones de acciones */
+.btn-mas,
+.btn-menos,
+.btn-eliminar {
+  padding: 5px 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 3px;
+}
+
+.btn-mas {
+  background: #28a745;
+  color: white;
+}
+
+.btn-menos {
+  background: #ffc107;
+  color: black;
+}
+
+.btn-eliminar {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-mas:hover {
+  background: #218838;
+}
+
+.btn-menos:hover {
+  background: #e0a800;
+}
+
+.btn-eliminar:hover {
+  background: #c82333;
+}

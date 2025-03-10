@@ -1,6 +1,4 @@
-// src/services/carritoService.js
-
-import api from "./../api/apiconfig"; 
+import api from "./../api/apiconfig";
 
 // Obtener el carrito de un cliente
 export const obtenerCarritoPorCliente = async (clienteId) => {
@@ -8,8 +6,8 @@ export const obtenerCarritoPorCliente = async (clienteId) => {
     const response = await api.get(`/carrito/${clienteId}`);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener carrito:", error);
-    return null;
+    console.error("⚠️ Error al obtener carrito:", error?.response?.data || error.message);
+    return { productos: [], total: 0 }; // Devolver estructura vacía en caso de error
   }
 };
 
@@ -19,7 +17,7 @@ export const agregarProductoAlCarrito = async (carritoId, producto) => {
     const response = await api.post(`/carrito-producto`, { carrito_id: carritoId, ...producto });
     return response.data;
   } catch (error) {
-    console.error("Error al agregar producto al carrito:", error);
+    console.error("⚠️ Error al agregar producto al carrito:", error?.response?.data || error.message);
     return null;
   }
 };
@@ -30,7 +28,18 @@ export const vaciarCarrito = async (carritoId) => {
     await api.delete(`/carrito/${carritoId}`);
     return true;
   } catch (error) {
-    console.error("Error al vaciar carrito:", error);
+    console.error("⚠️ Error al vaciar carrito:", error?.response?.data || error.message);
     return false;
+  }
+};
+
+// Eliminar un producto del carrito
+export const eliminarProductoDelCarrito = async (carritoId, productoId) => {
+  try {
+    const response = await api.delete(`/carrito-producto/${productoId}`);
+    return response.data;
+  } catch (error) {
+    console.error("⚠️ Error al eliminar producto del carrito:", error?.response?.data || error.message);
+    return null;
   }
 };

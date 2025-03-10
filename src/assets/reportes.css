@@ -24,6 +24,7 @@
   .campo {
     display: flex;
     flex-direction: column;
+ 
   }
   
   .campo label {
@@ -43,6 +44,8 @@
   
   .filtro-busqueda input {
     width: 300px;
+       margin-top: 21px;
+       margin-right: 39px;
   }
   
   .botones-reporte {
@@ -63,6 +66,7 @@
   .excel {
     background: #28a745;
     color: white;
+    
   }
   
   .excel:hover {
@@ -85,5 +89,59 @@
   
   .imprimir:hover {
     background: #c82333;
+  }
+ /*------------------------------------------ */
+  .tabla-container {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .tabla-ventas {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tabla-ventas th,
+  .tabla-ventas td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .tabla-ventas thead {
+    background: #f1f1f1;
+    font-weight: bold;
+  }
+  
+  .tabla-ventas tbody tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+  
+  .tabla-ventas tbody tr:hover {
+    background: #f0f0f0;
+  }
+  
+
+/*   ---------------------------- */
+
+.loader {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border: 4px solid rgba(0, 0, 0, 0.2);
+    border-top-color: black;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
   

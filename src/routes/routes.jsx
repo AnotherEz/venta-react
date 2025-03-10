@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import MetodoPago from "../components/componentes";
+import MetodoPago from "../components/metodoPago";
 import Sidebar from "../components/slidebar";
 import CarritoUI from "../components/carrito";
 import Home from "../pages/home";

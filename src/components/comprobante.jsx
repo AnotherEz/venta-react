@@ -66,7 +66,7 @@ export default function Boleta({ venta, onClose }) {
 
         {/* Cliente */}
         <div className="boleta-cliente">
-          <p><strong>Cajero:</strong> {venta.cajero || "Edison Fernandez"}</p>
+          <p><strong>Cajero:</strong> {venta.cajero || "Eduardo Fernandez"}</p>
           {venta.nombreCliente && <p><strong>Cliente:</strong> {venta.nombreCliente}</p>}
           {venta.dniRuc && <p><strong>DNI/RUC Cliente:</strong> {venta.dniRuc}</p>}
         </div>

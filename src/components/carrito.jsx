@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import BusquedaProductoUI from "./../components/busquedaproducto";
 import ListaCarritoUI from "./../components/listacarrito";
 import "./../assets/carrito.css";
 
-export default function CarritoUI({ clienteId, setTotalCarrito, carrito, setCarrito }) {
-  const [productos, setProductos] = useState([]);
-
+export default function CarritoUI({ clienteId, setTotalCarrito, carrito, setCarrito, productos, setProductos }) {
   return (
     <div className="carrito-container">
       {/* 🔹 Primero la búsqueda */}
@@ -22,6 +20,8 @@ export default function CarritoUI({ clienteId, setTotalCarrito, carrito, setCarr
         carrito={carrito} 
         setCarrito={setCarrito} 
         setTotalCarrito={setTotalCarrito} 
+        productos={productos}   // ✅ Pasamos productos
+        setProductos={setProductos} // ✅ Pasamos setProductos
       />
     </div>
   );

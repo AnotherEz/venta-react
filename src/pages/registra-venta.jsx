@@ -7,10 +7,11 @@ export default function Ventas() {
   const [clienteId, setClienteId] = useState(null);
   const [totalCarrito, setTotalCarrito] = useState(0);
   const [ventaFinalizada, setVentaFinalizada] = useState(null);
-  const [carrito, setCarrito] = useState([]); // ✅ Agregar el estado del carrito
+  const [carrito, setCarrito] = useState([]); // ✅ Estado del carrito
+  const [productos, setProductos] = useState([]); // ✅ Estado de productos para stock
 
   const handleFinalizarVenta = (venta) => {
-    setVentaFinalizada({ ...venta, productos: carrito }); // ✅ Incluir productos del carrito
+    setVentaFinalizada({ ...venta, productos: carrito }); // ✅ Incluir productos en la boleta
   };
 
   return (
@@ -19,7 +20,10 @@ export default function Ventas() {
       <MetodoPago 
         setClienteId={setClienteId} 
         totalCarrito={totalCarrito} 
-        carrito={carrito} // ✅ Pasamos el carrito
+        carrito={carrito} 
+        setCarrito={setCarrito}  // ✅ Pasamos setCarrito para vaciarlo luego
+        productos={productos}    // ✅ Pasamos productos para actualizar stock
+        setProductos={setProductos} // ✅ Pasamos setProductos para modificar el stock
         onFinalizarVenta={handleFinalizarVenta} 
       />
 
@@ -28,7 +32,9 @@ export default function Ventas() {
         clienteId={clienteId} 
         setTotalCarrito={setTotalCarrito} 
         carrito={carrito} 
-        setCarrito={setCarrito} // ✅ Pasamos el estado del carrito
+        setCarrito={setCarrito} 
+        productos={productos}    // ✅ Pasamos productos
+        setProductos={setProductos} // ✅ Pasamos setProductos
       />
 
       {/* ✅ Mostrar Boleta en modal si la venta fue finalizada */}
@@ -36,7 +42,7 @@ export default function Ventas() {
         <div className="modal-overlay">
           <Boleta 
             venta={ventaFinalizada} 
-            productos={ventaFinalizada.productos} // ✅ Enviamos los productos
+            productos={ventaFinalizada.productos} 
             onClose={() => setVentaFinalizada(null)} 
           />
         </div>

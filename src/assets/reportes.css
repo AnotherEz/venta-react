@@ -52,10 +52,12 @@
     display: flex;
     gap: 15px;
     margin-bottom: 15px;
+    margin-top:-40px;
+    margin-left: 600px;
   }
   
   .btn {
-    padding: 10px 15px;
+    padding: 5px 15px;
     border: none;
     border-radius: 5px;
     font-weight: bold;

@@ -11,7 +11,26 @@ export default function ListaCarritoUI({ carrito, setCarrito, productos, setProd
     setTotalCarrito(totalCalculado); // 🔹 Enviamos el total actualizado al componente padre
   }, [carrito, setTotalCarrito]);
 
-  // ❌ **Eliminar producto del carrito (Solo en Frontend)**
+  // 🆕 **Vaciar el carrito cuando el total llegue a 0 (después de una venta)**
+  useEffect(() => {
+    if (total === 0) {
+      setCarrito([]); // 🔹 Vaciar el carrito
+    }
+  }, [total, setCarrito]);
+
+  // 🆕 **Actualizar stock después de una venta**
+  useEffect(() => {
+    if (carrito.length === 0) {
+      setProductos((prevProductos) =>
+        prevProductos.map((prod) => ({
+          ...prod,
+          stock_disponible: prod.stock_disponible + (prod.vendido || 0),
+        }))
+      );
+    }
+  }, [carrito, setProductos]);
+
+  // ❌ **Eliminar producto del carrito y restaurar stock**
   const eliminarDelCarrito = (productoSeleccionado, cantidad) => {
     if (!productoSeleccionado) {
       alert("⚠️ Selecciona un producto antes de eliminar.");

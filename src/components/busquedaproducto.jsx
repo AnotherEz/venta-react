@@ -105,36 +105,27 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
       alert("⚠️ Error al agregar producto.");
     }
   };
-// ❌ Eliminar del carrito
-const handleEliminarDelCarrito = async () => {
-  if (!productoSeleccionado || !clienteId) {
-    alert("⚠️ Selecciona un producto y un cliente antes de eliminar.");
-    return;
-  }
 
-  try {
-    // Buscar el producto en el carrito para obtener la cantidad exacta
-    const productoEnCarrito = carrito.find(p => p.id_producto === productoSeleccionado.id_producto);
-
-    if (!productoEnCarrito) {
-      alert("⚠️ El producto no está en el carrito.");
+  // ❌ Eliminar del carrito
+  const handleEliminarDelCarrito = async () => {
+    if (!productoSeleccionado || !clienteId) {
+      alert("⚠️ Selecciona un producto y un cliente antes de eliminar.");
       return;
     }
 
-    await eliminarProductoDelCarrito(clienteId, productoSeleccionado.id_producto, productoEnCarrito.cantidad);
+    try {
+      await eliminarProductoDelCarrito(clienteId, productoSeleccionado.id_producto, cantidad);
+      limpiarSeleccion();
 
-    limpiarSeleccion();
-
-    // ✅ Actualizar el estado del carrito eliminando el producto localmente
-    if (typeof actualizarCarrito === "function") {
-      actualizarCarrito();
-    } else {
-      console.warn("⚠️ actualizarCarrito no está definido o no es una función.");
+      if (typeof actualizarCarrito === "function") {
+        actualizarCarrito(); // ✅ Solo se llama si es una función válida
+      } else {
+        console.warn("⚠️ actualizarCarrito no está definido o no es una función.");
+      }
+    } catch (error) {
+      alert("⚠️ Error al eliminar producto.");
     }
-  } catch (error) {
-    alert("⚠️ Error al eliminar producto.");
-  }
-};
+  };
 
   // 🔄 Limpiar selección después de agregar/eliminar producto
   const limpiarSeleccion = () => {

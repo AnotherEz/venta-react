@@ -1,10 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import MetodoPago from "../components/metodoPago";
 import Sidebar from "../components/slidebar";
-import CarritoUI from "../components/carrito";
 import Home from "../pages/home";
 import ReporteVentasUI from "../pages/reportes";
 import Boleta from "../components/comprobante"; // Importamos el componente de la boleta
+import Ventas from "../pages/registra-venta";
 
 const AppRoutes = () => {
   // Datos de prueba para la boleta
@@ -48,8 +47,7 @@ const AppRoutes = () => {
         <div className="app-container">
           <Sidebar />
           <div className="main-content">
-            <MetodoPago />
-            <CarritoUI />
+           <Ventas />
             <Boleta datos={datosBoleta} /> {/* Enviamos los datos de la boleta */}
           </div>
         </div>

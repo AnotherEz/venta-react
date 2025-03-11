@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { obtenerProductos, buscarProductos } from "./../services/productoService";
 import { agregarProductoAlCarrito, eliminarProductoDelCarrito } from "./../services/carritoService";
-import "./../assets/busqproduct.css"; 
+import "./../assets/busqproduct.css";
 
 export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
   const [productos, setProductos] = useState([]);
@@ -12,7 +12,7 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
   const [mostrarBotonBuscar, setMostrarBotonBuscar] = useState(false);
   const [cantidad, setCantidad] = useState(1);
 
-  // 🔹 Cargar todos los productos al inicio para filtrar en frontend
+  // 🔹 Cargar todos los productos al inicio
   useEffect(() => {
     const cargarProductos = async () => {
       setLoading(true);
@@ -27,6 +27,19 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
     };
     cargarProductos();
   }, []);
+
+  // 🔹 Manejo de eventos del teclado (tecla "+")
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "+" && productoSeleccionado && clienteId) {
+        e.preventDefault();
+        handleAgregarAlCarrito();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [productoSeleccionado, cantidad, clienteId]);
 
   // 🔹 Filtrar productos en tiempo real
   const handleInputChange = (e) => {
@@ -69,34 +82,52 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
     setProductoSeleccionado(producto);
     setQuery(producto.nombre_producto);
     setFiltroProductos([]);
-    setCantidad(1); 
+    setCantidad(1);
   };
 
-  // 🔹 Agregar al carrito
+  // 🛒 Agregar al carrito y limpiar
   const handleAgregarAlCarrito = async () => {
-    if (!productoSeleccionado || cantidad < 1) return;
+    if (!productoSeleccionado || cantidad < 1 || !clienteId) {
+      alert("⚠️ Selecciona un producto y un cliente antes de agregar.");
+      return;
+    }
+
     try {
-      await agregarProductoAlCarrito(clienteId, { ...productoSeleccionado, cantidad });
+      await agregarProductoAlCarrito(clienteId, productoSeleccionado.id_producto, cantidad);
       limpiarSeleccion();
-      actualizarCarrito();
+
+      if (typeof actualizarCarrito === "function") {
+        actualizarCarrito(); // ✅ Solo se llama si es una función válida
+      } else {
+        console.warn("⚠️ actualizarCarrito no está definido o no es una función.");
+      }
     } catch (error) {
       alert("⚠️ Error al agregar producto.");
     }
   };
 
-  // 🔹 Eliminar del carrito
+  // ❌ Eliminar del carrito
   const handleEliminarDelCarrito = async () => {
-    if (!productoSeleccionado) return;
+    if (!productoSeleccionado || !clienteId) {
+      alert("⚠️ Selecciona un producto y un cliente antes de eliminar.");
+      return;
+    }
+
     try {
-      await eliminarProductoDelCarrito(clienteId, productoSeleccionado.id);
+      await eliminarProductoDelCarrito(clienteId, productoSeleccionado.id_producto, cantidad);
       limpiarSeleccion();
-      actualizarCarrito();
+
+      if (typeof actualizarCarrito === "function") {
+        actualizarCarrito(); // ✅ Solo se llama si es una función válida
+      } else {
+        console.warn("⚠️ actualizarCarrito no está definido o no es una función.");
+      }
     } catch (error) {
       alert("⚠️ Error al eliminar producto.");
     }
   };
 
-  // 🔹 Limpiar selección después de agregar/eliminar producto
+  // 🔄 Limpiar selección después de agregar/eliminar producto
   const limpiarSeleccion = () => {
     setProductoSeleccionado(null);
     setQuery("");
@@ -109,8 +140,18 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
 
       {/* Barra de búsqueda */}
       <div className="busqueda-barra">
-        <input type="text" value={query} onChange={handleInputChange} placeholder="🔍 Escriba el código, nombre o palabra clave..." className="input-busqueda" />
-        <button onClick={handleBuscarEnAPI} disabled={!mostrarBotonBuscar} className={`btn-buscar ${mostrarBotonBuscar ? "activo" : "icono"}`}>
+        <input
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+          placeholder="🔍 Escriba el código, nombre o palabra clave..."
+          className="input-busqueda"
+        />
+        <button
+          onClick={handleBuscarEnAPI}
+          disabled={!mostrarBotonBuscar}
+          className={`btn-buscar ${mostrarBotonBuscar ? "activo" : "icono"}`}
+        >
           🔍
         </button>
       </div>
@@ -132,7 +173,13 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
           <div className="producto-info">
             <div className="campo">
               <label className="campo-label">Cantidad</label>
-              <input type="number" min="1" value={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value, 10))} className="cantidad-input" />
+              <input
+                type="number"
+                min="1"
+                value={cantidad}
+                onChange={(e) => setCantidad(parseInt(e.target.value, 10))}
+                className="cantidad-input"
+              />
             </div>
 
             <div className="campo">
@@ -164,10 +211,10 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
 
           {/* Botones de acción abajo */}
           <div className="botones-agregar">
-            <button className="btn-agregar" onClick={handleAgregarAlCarrito} disabled={!productoSeleccionado}>
+            <button className="btn-agregar" onClick={handleAgregarAlCarrito} disabled={!productoSeleccionado || !clienteId}>
               Agregar producto al carrito
             </button>
-            <button className="btn-eliminar" onClick={handleEliminarDelCarrito} disabled={!productoSeleccionado}>
+            <button className="btn-eliminar" onClick={handleEliminarDelCarrito} disabled={!productoSeleccionado || !clienteId}>
               Eliminar producto
             </button>
           </div>

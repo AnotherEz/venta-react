@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { obtenerDatosPorDni } from "./../services/reniecService";
+import { obtenerDatosPorDni, obtenerDatosPorRuc } from "./../services/reniecService";
 import "./../assets/metpago.css"; // Importamos el CSS
 
-export default function MetodoPago() {
+export default function MetodoPago({ setClienteId }) {
   // Estados
   const [tipoVenta, setTipoVenta] = useState("Venta rápida");
   const [tipoPago, setTipoPago] = useState("Efectivo");
@@ -19,28 +19,25 @@ export default function MetodoPago() {
   const montoEfectivoDisabled = tipoPago === "Tarjeta/POS" || carritoVacio;
   const montoTarjetaDisabled = tipoPago === "Efectivo" || carritoVacio;
 
+  // Definir el tipo de documento esperado
+  const isBoleta = tipoVenta === "Venta con Boleta";
+  const isFactura = tipoVenta === "Venta con Factura";
+  const maxLength = isBoleta ? 8 : isFactura ? 11 : 11; // 8 para DNI, 11 para RUC
+
   // Manejo del cambio de tipo de venta
   const handleTipoVentaChange = (e) => {
     const selectedTipoVenta = e.target.value;
     setTipoVenta(selectedTipoVenta);
-
-    if (selectedTipoVenta === "Venta rápida") {
-      setDniRuc("");
-      setNombreCliente("");
-    }
+    setDniRuc("");
+    setNombreCliente("");
+    setClienteId(null); // Reiniciar clienteId al cambiar tipo de venta
   };
 
   // Manejo del cambio de tipo de pago
   const handleTipoPagoChange = (e) => {
-    const selectedTipoPago = e.target.value;
-    setTipoPago(selectedTipoPago);
-
-    if (selectedTipoPago === "Tarjeta/POS") {
-      setMontoEfectivo("");
-    }
-    if (selectedTipoPago === "Efectivo") {
-      setMontoTarjeta("");
-    }
+    setTipoPago(e.target.value);
+    if (e.target.value === "Tarjeta/POS") setMontoEfectivo("");
+    if (e.target.value === "Efectivo") setMontoTarjeta("");
   };
 
   // Cálculo del vuelto
@@ -50,22 +47,37 @@ export default function MetodoPago() {
     setVuelto(efectivo > totalCompra ? efectivo - totalCompra : 0);
   };
 
-  // 🔍 Buscar DNI/RUC en la API de RENIEC
-const handleBuscarDniRuc = async (e) => {
-  const dniIngresado = e.target.value;
-  setDniRuc(dniIngresado);
+  // Validar y buscar en la API
+  const handleBuscarDniRuc = async (e) => {
+    const numeroIngresado = e.target.value;
+    setDniRuc(numeroIngresado);
 
-  if (dniIngresado.length === 8) { // Solo consulta si son 8 dígitos (DNI)
-      const data = await obtenerDatosPorDni(dniIngresado);
+    if (isBoleta && numeroIngresado.length === 8) {
+      // 🔍 Buscar por DNI
+      const data = await obtenerDatosPorDni(numeroIngresado);
       if (data) {
-          setNombreCliente(data); // 📌 Guardar directamente `nombre_cliente`
+        setNombreCliente(data.nombre_cliente || "Nombre no disponible");
+        setClienteId(data.id_cliente || null);
       } else {
-          setNombreCliente("DNI no encontrado");
+        setNombreCliente("DNI no encontrado");
+        setClienteId(null);
       }
-  } else {
-      setNombreCliente(""); // Limpia si no es válido
-  }
-};
+    } else if (isFactura && numeroIngresado.length === 11) {
+      // 🔍 Buscar por RUC
+      const data = await obtenerDatosPorRuc(numeroIngresado);
+      if (data) {
+        setNombreCliente(data.nombre_cliente || "Razón social no disponible");
+        setClienteId(data.id_cliente || null);
+      } else {
+        setNombreCliente("RUC no encontrado");
+        setClienteId(null);
+      }
+    } else {
+      // 🛑 Limpiar si la entrada no es válida
+      setNombreCliente("");
+      setClienteId(null);
+    }
+  };
 
   return (
     <div className="metodo-pago-container">
@@ -88,10 +100,12 @@ const handleBuscarDniRuc = async (e) => {
             value={dniRuc}
             onChange={handleBuscarDniRuc}
             disabled={dniRucDisabled}
-            placeholder="Ingresa DNI / RUC"
-            maxLength={11} // Puede ser DNI (8) o RUC (11)
+            placeholder={isBoleta ? "Ingresa DNI (8 dígitos)" : isFactura ? "Ingresa RUC (11 dígitos)" : "Ingresa DNI/RUC"}
+            maxLength={maxLength}
           />
-          <p className="subtexto">{"Nombre/Razón social: "+nombreCliente || "Nombre/Razón social"}</p>
+          <p className="subtexto">
+            {nombreCliente ? `Nombre/Razón social: ${nombreCliente}` : "Nombre/Razón social"}
+          </p>
         </div>
 
         {/* Tipo de Pago y Montos */}

@@ -1,16 +1,20 @@
-import React from "react";
-import BusquedaProductoUI from "./busquedaproducto";
-import ListaCarritoUI from "./listacarrito";
-import "./../assets/carrito.css"; // Estilos específicos para este componente
+import React, { useState } from "react";
+import BusquedaProductoUI from "./../components/busquedaproducto";
+import ListaCarritoUI from "./../components/listacarrito";
+import "./../assets/carrito.css";
 
-export default function CarritoUI() {
+export default function CarritoUI({ clienteId }) {
+  const [reloadCarrito, setReloadCarrito] = useState(false);
+
+  // 🔄 Función para forzar la actualización del carrito
+  const actualizarCarrito = () => {
+    setReloadCarrito((prev) => !prev);
+  };
+
   return (
     <div className="carrito-container">
-      {/* Sección de búsqueda y detalle del producto */}
-      <BusquedaProductoUI />
-
-      {/* Sección del carrito */}
-      <ListaCarritoUI />
+      <BusquedaProductoUI clienteId={clienteId} actualizarCarrito={actualizarCarrito} />
+      <ListaCarritoUI clienteId={clienteId} reloadCarrito={reloadCarrito} />
     </div>
   );
 }

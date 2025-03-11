@@ -1,12 +1,20 @@
-import api from '../api';
+import * as reniecApi from './../api/reniecApi';
 
-// Procesar pago
-export const procesarPago = async (datosPago) => {
-  try {
-    const response = await api.post('/pago', datosPago);
-    return response.data;
-  } catch (error) {
-    console.error("Error al procesar pago:", error);
-    return null;
-  }
+export const obtenerDatosPorDni = async (dni) => {
+    try {
+        const response = await reniecApi.buscarDni(dni);
+        
+        if (response && response.nombre_cliente && response.id_cliente) {
+            return {
+                id_cliente: response.id_cliente,  // 🔹 Guarda el ID del cliente
+                nombre_cliente: response.nombre_cliente // 🔹 Guarda el nombre del cliente
+            };
+        }
+
+        console.warn("Cliente no encontrado en BD.");
+        return null;
+    } catch (error) {
+        console.error("Error obteniendo datos del DNI:", error);
+        return null;
+    }
 };

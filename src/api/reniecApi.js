@@ -9,3 +9,13 @@ export const buscarDni = async (dni) => {
         throw error;
     }
 };
+
+export const buscarRuc = async (ruc) => {
+    try {
+        const response = await api.get(`/ruc/${ruc}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error en la consulta del RUC:", error);
+        throw error;
+    }
+};

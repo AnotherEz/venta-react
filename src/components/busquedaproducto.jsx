@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { obtenerProductos, buscarProductos } from "./../services/productoService";
-import { agregarProductoAlCarrito, eliminarProductoDelCarrito } from "./../services/carritoService";
 import "./../assets/busqproduct.css";
 
-export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
+export default function BusquedaProductoUI({ clienteId, carrito, setCarrito }) {
   const [productos, setProductos] = useState([]);
   const [filtroProductos, setFiltroProductos] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
@@ -12,7 +11,7 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
   const [mostrarBotonBuscar, setMostrarBotonBuscar] = useState(false);
   const [cantidad, setCantidad] = useState(1);
 
-  // 🔹 Cargar todos los productos al inicio
+  // 🔹 Cargar productos desde la API
   useEffect(() => {
     const cargarProductos = async () => {
       setLoading(true);
@@ -26,20 +25,26 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
       }
     };
     cargarProductos();
+
   }, []);
+  // 🔹 Atajos de teclado para agregar y limpiar
+useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key === "+" && productoSeleccionado) {
+      e.preventDefault();
+      handleAgregarAlCarrito();
+    }
+    if (e.ctrlKey && e.key === "Control") {
+      e.preventDefault();
+      limpiarSeleccion();
+      document.getElementById("input-busqueda").focus(); // 🔹 Enfocar el campo de búsqueda
+    }
+  };
 
-  // 🔹 Manejo de eventos del teclado (tecla "+")
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "+" && productoSeleccionado && clienteId) {
-        e.preventDefault();
-        handleAgregarAlCarrito();
-      }
-    };
+  document.addEventListener("keydown", handleKeyDown);
+  return () => document.removeEventListener("keydown", handleKeyDown);
+}, [productoSeleccionado, cantidad]);
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [productoSeleccionado, cantidad, clienteId]);
 
   // 🔹 Filtrar productos en tiempo real
   const handleInputChange = (e) => {
@@ -85,47 +90,112 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
     setCantidad(1);
   };
 
-  // 🛒 Agregar al carrito y limpiar
-  const handleAgregarAlCarrito = async () => {
-    if (!productoSeleccionado || cantidad < 1 || !clienteId) {
-      alert("⚠️ Selecciona un producto y un cliente antes de agregar.");
+  // 🛒 **Agregar producto al carrito (Solo en frontend)**
+  const handleAgregarAlCarrito = () => {
+    if (!productoSeleccionado || cantidad < 1) {
+      alert("⚠️ Selecciona un producto antes de agregar.");
       return;
     }
-
-    try {
-      await agregarProductoAlCarrito(clienteId, productoSeleccionado.id_producto, cantidad);
-      limpiarSeleccion();
-
-      if (typeof actualizarCarrito === "function") {
-        actualizarCarrito(); // ✅ Solo se llama si es una función válida
-      } else {
-        console.warn("⚠️ actualizarCarrito no está definido o no es una función.");
-      }
-    } catch (error) {
-      alert("⚠️ Error al agregar producto.");
-    }
-  };
-
-  // ❌ Eliminar del carrito
-  const handleEliminarDelCarrito = async () => {
-    if (!productoSeleccionado || !clienteId) {
-      alert("⚠️ Selecciona un producto y un cliente antes de eliminar.");
+  
+    if (cantidad > productoSeleccionado.stock_disponible) {
+      alert("⚠️ Stock insuficiente.");
       return;
     }
-
-    try {
-      await eliminarProductoDelCarrito(clienteId, productoSeleccionado.id_producto, cantidad);
-      limpiarSeleccion();
-
-      if (typeof actualizarCarrito === "function") {
-        actualizarCarrito(); // ✅ Solo se llama si es una función válida
-      } else {
-        console.warn("⚠️ actualizarCarrito no está definido o no es una función.");
-      }
-    } catch (error) {
-      alert("⚠️ Error al eliminar producto.");
+  
+    const productoExistente = carrito.find((p) => p.id_producto === productoSeleccionado.id_producto);
+  
+    let nuevoCarrito;
+    if (productoExistente) {
+      nuevoCarrito = carrito.map((p) =>
+        p.id_producto === productoSeleccionado.id_producto
+          ? { 
+              ...p, 
+              cantidad: p.cantidad + cantidad,
+              precio_normal: p.precio_unitario * (p.cantidad + cantidad),
+              descuento: p.descuento + (productoSeleccionado.descuento * cantidad), 
+              subtotal: (p.precio_unitario * (p.cantidad + cantidad)) - (p.descuento + (productoSeleccionado.descuento * cantidad))
+            }
+          : p
+      );
+    } else {
+      nuevoCarrito = [
+        ...carrito,
+        {
+          id_producto: productoSeleccionado.id_producto,
+          codigo: productoSeleccionado.codigo,
+          nombre: productoSeleccionado.nombre_producto,
+          categoria: productoSeleccionado.categoria,
+          presentacion: productoSeleccionado.presentacion,
+          cantidad,
+          precio_unitario: productoSeleccionado.precio_unitario,
+          precio_normal: productoSeleccionado.precio_unitario * cantidad,
+          descuento: productoSeleccionado.descuento * cantidad,
+          subtotal: (productoSeleccionado.precio_unitario * cantidad) - (productoSeleccionado.descuento * cantidad),
+        },
+      ];
     }
+  
+    setCarrito(nuevoCarrito);
+  
+    // 🔹 **Disminuir stock en la lista de productos**
+    setProductos((prevProductos) =>
+      prevProductos.map((prod) =>
+        prod.id_producto === productoSeleccionado.id_producto
+          ? { ...prod, stock_disponible: prod.stock_disponible - cantidad }
+          : prod
+      )
+    );
+  
+    limpiarSeleccion();
   };
+  
+
+  const handleEliminarDelCarrito = () => {
+    if (!productoSeleccionado) {
+      alert("⚠️ Selecciona un producto antes de eliminar.");
+      return;
+    }
+  
+    const productoExistente = carrito.find((p) => p.id_producto === productoSeleccionado.id_producto);
+  
+    if (!productoExistente) {
+      alert("⚠️ El producto no está en el carrito.");
+      return;
+    }
+  
+    let nuevoCarrito;
+    if (productoExistente.cantidad > cantidad) {
+      // 🔹 **Reducir cantidad y recalcular precios**
+      nuevoCarrito = carrito.map((p) =>
+        p.id_producto === productoSeleccionado.id_producto
+          ? {
+              ...p,
+              cantidad: p.cantidad - cantidad,
+              precio_normal: p.precio_unitario * (p.cantidad - cantidad),
+              descuento: p.descuento - (productoSeleccionado.descuento * cantidad),
+              subtotal: (p.precio_unitario * (p.cantidad - cantidad)) - (p.descuento - (productoSeleccionado.descuento * cantidad)),
+            }
+          : p
+      );
+    } else {
+      // 🔹 **Eliminar producto del carrito si la cantidad es 0**
+      nuevoCarrito = carrito.filter((p) => p.id_producto !== productoSeleccionado.id_producto);
+    }
+  
+    setCarrito(nuevoCarrito);
+  
+    // 🔹 **Restaurar stock en la lista de productos**
+    setProductos((prevProductos) =>
+      prevProductos.map((prod) =>
+        prod.id_producto === productoSeleccionado.id_producto
+          ? { ...prod, stock_disponible: prod.stock_disponible + cantidad }
+          : prod
+      )
+    );
+  
+    limpiarSeleccion();
+  };
+  
 
   // 🔄 Limpiar selección después de agregar/eliminar producto
   const limpiarSeleccion = () => {
@@ -140,13 +210,15 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
 
       {/* Barra de búsqueda */}
       <div className="busqueda-barra">
-        <input
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          placeholder="🔍 Escriba el código, nombre o palabra clave..."
-          className="input-busqueda"
-        />
+      <input
+        id="input-busqueda" // 🔹 Agrega un ID para que podamos enfocar con `CTRL`
+        type="text"
+        value={query}
+        onChange={handleInputChange}
+        placeholder="🔍 Escriba el código, nombre o palabra clave..."
+        className="input-busqueda"
+      />
+
         <button
           onClick={handleBuscarEnAPI}
           disabled={!mostrarBotonBuscar}
@@ -159,15 +231,15 @@ export default function BusquedaProductoUI({ clienteId, actualizarCarrito }) {
       {/* Lista de sugerencias */}
       {filtroProductos.length > 0 && (
         <ul className="lista-sugerencias">
-          {filtroProductos.slice(0, 5).map((producto) => (
+          {filtroProductos.map((producto) => (
             <li key={producto.codigo} onClick={() => handleSeleccionarProducto(producto)}>
-              {producto.nombre_producto} - {producto.codigo}
+              {producto.nombre_producto} - {producto.codigo} (Stock: {producto.stock_disponible})
             </li>
           ))}
         </ul>
       )}
-
       {/* Información del producto seleccionado */}
+   
       {productoSeleccionado && (
         <div className="detalle-producto">
           <div className="producto-info">

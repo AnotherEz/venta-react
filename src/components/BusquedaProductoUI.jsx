@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { obtenerProductos, buscarProductos } from "./../services/productoService";
+import { obtenerProductos, buscarProductos } from "../services/productoService";
 import "./../assets/busqproduct.css";
 
 export default function BusquedaProductoUI({ clienteId, carrito, setCarrito }) {

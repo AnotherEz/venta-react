@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import TablaVentas from "./../components/tablaVentas";
-import { obtenerVentas } from "./../services/ventaService";
+import TablaVentas from "../components/TablaVentasUI";
+import { obtenerVentas } from "../services/ventaService";
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
 import "./../assets/reportes.css";

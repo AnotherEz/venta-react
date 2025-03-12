@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"; 
 import moment from 'moment-timezone';
-import { obtenerDatosPorDni, obtenerDatosPorRuc } from "./../services/reniecService";
-import { registrarVenta } from "./../services/ventaService"; // 🆕 Para registrar venta
+import { obtenerDatosPorDni, obtenerDatosPorRuc } from "../services/reniecService";
+import { registrarVenta } from "../services/ventaService"; // 🆕 Para registrar venta
 import "./../assets/metpago.css";
 
 export default function MetodoPago({ 

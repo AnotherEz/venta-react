@@ -19,14 +19,3 @@ export const registrarVenta = async (datosVenta) => {
       return null;
     }
   };
-
-// Eliminar una venta
-export const eliminarVenta = async (id) => {
-  try {
-    await api.delete(`/ventas/${id}`);
-    return true;
-  } catch (error) {
-    console.error("Error al eliminar venta:", error);
-    return false;
-  }
-};

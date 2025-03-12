@@ -1,6 +1,6 @@
 import React from "react";
-import BusquedaProductoUI from "./../components/busquedaproducto";
-import ListaCarritoUI from "./../components/listacarrito";
+import BusquedaProductoUI from "./BusquedaProductoUI";
+import ListaCarritoUI from "./ListaCarritoUI";
 import "./../assets/carrito.css";
 
 export default function CarritoUI({ clienteId, setTotalCarrito, carrito, setCarrito, productos, setProductos }) {

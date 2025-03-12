@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import MetodoPago from "./../components/metodoPago";
-import CarritoUI from "./../components/carrito";
-import Boleta from "./../components/comprobante"; // 🔹 Asegúrate de que la ruta es correcta
+import MetodoPago from "../components/MetodoPagoUI";
+import CarritoUI from "../components/CarritoUI";
+import Boleta from "../components/VoucherUI"; // 🔹 Asegúrate de que la ruta es correcta
 
 export default function Ventas() {
   const [clienteId, setClienteId] = useState(null);

@@ -194,30 +194,35 @@ export default function MetodoPago({
     }
 
     // Registrar en la BD
-    try {
-      const datosParaBD = {
-        vendedor_id: 1,
-        cliente_id: myClienteId || 1,
-        fecha: moment().tz('America/Lima').format('YYYY-MM-DD'),  // Fecha en Lima
-        hora: moment().tz('America/Lima').format('HH:mm:ss'),    // Hora en Lima
-        tipo_comprobante:
-          tipoVenta === "Venta rápida"
-            ? "RAPIDA"
-            : tipoVenta === "Venta con Boleta"
-            ? "BOLETA"
-            : "FACTURA",
-        importe_total: totalCarrito,
-      };
+try {
+  const datosParaBD = {
+    vendedor_id: 1,
+    cliente_id: myClienteId || 1,
+    fecha: moment().tz('America/Lima').format('YYYY-MM-DD'), // Fecha en Lima
+    hora: moment().tz('America/Lima').format('HH:mm:ss'), // Hora en Lima
+    tipo_comprobante:
+      tipoVenta === "Venta rápida"
+        ? "RAPIDA"
+        : tipoVenta === "Venta con Boleta"
+        ? "BOLETA"
+        : "FACTURA",
+    importe_total: totalCarrito,
+  };
 
-      console.log("📤 Registrando venta en BD...", datosParaBD);
+  console.log("📤 Registrando venta en BD...", datosParaBD);
 
-      const respuesta = await registrarVenta(datosParaBD);
-      if (respuesta) {
-        console.log("✅ Venta registrada en la BD:", respuesta);
-      }
-    } catch (error) {
-      console.error("❌ Error al registrar la venta:", error);
-    }
+  const respuesta = await registrarVenta(datosParaBD);
+  if (respuesta) {
+    console.log("✅ Venta registrada en la BD:", respuesta);
+  } else {
+    alert("⚠️ La venta no se registró en la base de datos. Por favor, inténtelo nuevamente.");
+    console.error("⚠️ La venta no se registró en la BD.");
+  }
+} catch (error) {
+  console.error("❌ Error al registrar la venta:", error);
+  alert("❌ Ocurrió un error al registrar la venta. Revise la consola para más detalles.");
+}
+
 
     resetVenta();
   };

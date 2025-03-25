@@ -1,13 +1,13 @@
 import React from "react";
-import BusquedaProductoUI from "./BusquedaProductoUI";
-import ListaCarritoUI from "./ListaCarritoUI";
+import BusquedaProductoVentaUI from "./molecules/BusquedaProductoVentaUI";
+import ListaCarritoUI from "./../components/molecules/ListaCarritoVentasUI";
 import "./../assets/carrito.css";
 
-export default function CarritoUI({ clienteId, setTotalCarrito, carrito, setCarrito, productos, setProductos }) {
+export default function CarritoVentaUI({ clienteId, setTotalCarrito, carrito, setCarrito, productos, setProductos }) {
   return (
     <div className="carrito-container">
       {/* 🔹 Primero la búsqueda */}
-      <BusquedaProductoUI
+      <BusquedaProductoVentaUI
         clienteId={clienteId}
         carrito={carrito}
         setCarrito={setCarrito}

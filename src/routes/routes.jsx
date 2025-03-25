@@ -3,6 +3,7 @@ import Sidebar from "../components/MenuLateralUI";
 import Home from "../pages/HomeUI";
 import ReporteVentasUI from "../pages/ReporteUI";
 import Ventas from "../pages/VentaUI";
+import IngresoInventarioUI from "../pages/Compras";
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,15 @@ const AppRoutes = () => {
           <Sidebar />
           <div className="main-content">
             <Ventas />
+          </div>
+        </div>
+      } />
+
+      <Route path="/compras" element={
+        <div className="app-container">
+          <Sidebar />
+          <div className="main-content">
+            <IngresoInventarioUI/>
           </div>
         </div>
       } />

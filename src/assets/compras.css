@@ -1,0 +1,310 @@
+/* =========================================
+   Estilos unificados para la UI de Compras
+   con prefijo "compras-"
+========================================= */
+
+/* ============================
+   1) Contenedor principal
+============================ */
+.compras-container {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem; /* Espacio inferior */
+  }
+  
+  .compras-container h2 {
+    margin-top: 0;
+  }
+  
+  /* ============================
+     2) Barra de Búsqueda
+  ============================ */
+  .compras-busqueda-barra {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .compras-busqueda-barra input {
+    flex: 1;
+    padding: 0.4rem;
+    font-size: 0.95rem;
+  }
+  .compras-busqueda-barra button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .compras-busqueda-barra button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* ============================
+     3) Lista de sugerencias
+  ============================ */
+  .compras-lista-sugerencias {
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ddd;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 1rem;
+  }
+  .compras-lista-sugerencias li {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+  .compras-lista-sugerencias li:hover {
+    background-color: #f3f3f3;
+  }
+  .compras-lista-sugerencias li:last-child {
+    border-bottom: none;
+  }
+  
+  /* ============================
+     4) Detalle Producto
+  ============================ */
+  .compras-detalle-producto {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .compras-producto-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .compras-campo {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+  }
+  .compras-campo label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  .compras-campo input {
+    padding: 0.4rem;
+    font-size: 0.9rem;
+  }
+  .compras-info-texto {
+    font-size: 0.9rem;
+    color: #444;
+    padding: 0.25rem 0;
+  }
+  .compras-botones-agregar {
+    display: flex;
+    gap: 1rem;
+  }
+  /* Botones de Agregar/Eliminar */
+  .compras-botones-agregar .btn-agregar,
+  .compras-botones-agregar .btn-eliminar {
+    padding: 0.5rem 1rem;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .compras-botones-agregar .btn-agregar {
+    background-color: #28a745;
+  }
+  .compras-botones-agregar .btn-agregar:hover {
+    background-color: #218838;
+  }
+  .compras-botones-agregar .btn-eliminar {
+    background-color: #dc3545;
+  }
+  .compras-botones-agregar .btn-eliminar:hover {
+    background-color: #c82333;
+  }
+  
+  /* ============================
+     5) Tabla (Carrito de Compras)
+  ============================ */
+  .compras-carrito-lista-container {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 1rem;
+  }
+  .compras-carrito-lista-container h2 {
+    margin-top: 0;
+  }
+  .compras-empty-text {
+    font-style: italic;
+    color: #888;
+  }
+  .compras-tabla-carrito {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.75rem;
+  }
+  .compras-tabla-carrito thead tr {
+    background-color: #f1f1f1;
+  }
+  .compras-tabla-carrito th,
+  .compras-tabla-carrito td {
+    border: 1px solid #ddd;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .compras-tabla-carrito th {
+    font-weight: bold;
+  }
+  .compras-tabla-carrito tbody tr:hover {
+    background-color: #fafafa;
+  }
+  .compras-btn-eliminar {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 0.4rem 0.6rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .compras-btn-eliminar:hover {
+    background-color: #c82333;
+  }
+  
+  /* ============================
+     6) Finalizar, Limpiar, etc.
+  ============================ */
+  /* Botón "Limpiar selección" */
+  .compras-btn-limpiar {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin: 0.5rem 0;
+  }
+  .compras-btn-limpiar:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Para contenedor "Finalizar Compra" */
+  .finalizar-container-compra {
+    margin-top: 1rem;
+    text-align: right;
+  }
+  .btn-finalizar-compra {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-finalizar-compra:hover {
+    background-color: #218838;
+  }
+  
+  /* ============================
+     7) Comprobante de Compra
+  ============================ */
+  .comprobante-compra-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .comprobante-compra-container {
+    background-color: #fff;
+    padding: 1rem;
+    width: 400px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .comprobante-compra-header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .comprobante-compra-header h3 {
+    margin: 0.5rem 0;
+  }
+  .comprobante-compra-productos {
+    margin-bottom: 1rem;
+  }
+  .comprobante-compra-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  .comprobante-compra-item {
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5rem;
+  }
+  .comprobante-compra-item:last-child {
+    border-bottom: none;
+  }
+  .comprobante-compra-totales {
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  .comprobante-compra-totales p {
+    display: flex;
+    justify-content: space-between;
+  }
+  .comprobante-compra-totales span {
+    color: #007bff;
+  }
+  .comprobante-compra-proveedor {
+    margin-bottom: 1rem;
+  }
+  .comprobante-compra-qr {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .comprobante-compra-botones {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .comprobante-compra-botones button {
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .comprobante-compra-botones button:first-child {
+    background-color: #007bff;
+    color: #fff;
+  }
+  .comprobante-compra-botones button:last-child {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  .comprobante-compra-botones button:hover {
+    opacity: 0.9;
+  }
+  

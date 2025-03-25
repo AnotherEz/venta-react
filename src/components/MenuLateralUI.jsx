@@ -16,6 +16,10 @@ const Sidebar = () => {
         <FaShoppingCart className="icon" />
         <span>Ventas</span>
       </div>
+      <div className="sidebar-option" onClick={() => navigate("/compras")}> 
+        <FaUser className="icon" />
+        <span>Compras</span>
+      </div>
       <div className="sidebar-option" onClick={() => navigate("/reportes")}> 
         <FaUser className="icon" />
         <span>Reportes</span>

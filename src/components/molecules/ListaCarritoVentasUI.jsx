@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./../assets/carrito.css";
+import "./../../assets/carrito.css";
 
 export default function ListaCarritoUI({ carrito, setCarrito, productos, setProductos, setTotalCarrito }) {
   const [total, setTotal] = useState(0);

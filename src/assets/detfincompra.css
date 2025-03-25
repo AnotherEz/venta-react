@@ -1,0 +1,102 @@
+/* Estilos exclusivos para el componente DetalleProductoSeleccionadoCompra.jsx */
+
+/* Contenedor principal */
+.detalle-producto-compra {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 4px;
+    background-color: #fafafa;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap; /* Para responder mejor en pantallas pequeñas */
+    gap: 1rem;
+  }
+  
+  /* Información del producto (columnas) */
+  .detalle-producto-compra .producto-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex: 1;
+  }
+  
+  /* Cada campo */
+  .detalle-producto-compra .campo {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+  }
+  
+  /* Etiqueta */
+  .detalle-producto-compra .campo-label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Valores (texto) */
+  .detalle-producto-compra .info-texto {
+    padding: 0.25rem 0;
+    font-size: 0.95rem;
+  }
+  
+  /* Inputs */
+  .detalle-producto-compra .cantidad-input,
+  .detalle-producto-compra .precio-input {
+    width: 100px;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Sección de descripción */
+  .detalle-producto-compra .descripcion {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  /* Texto de la descripción */
+  .detalle-producto-compra .descripcion-texto {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border-radius: 4px;
+    min-height: 50px;
+    margin-top: 0.25rem;
+  }
+  
+  /* Botones de acción */
+  .detalle-producto-compra .botones-agregar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto; /* Para alinear en la parte de abajo si hay espacio */
+  }
+  
+  /* Botones */
+  .detalle-producto-compra .btn-agregar {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .detalle-producto-compra .btn-agregar:hover {
+    background-color: #218838;
+  }
+  
+  .detalle-producto-compra .btn-eliminar {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .detalle-producto-compra .btn-eliminar:hover {
+    background-color: #c82333;
+  }
+  

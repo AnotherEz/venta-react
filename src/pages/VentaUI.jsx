@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import MetodoPago from "../components/MetodoPagoUI";
-import CarritoUI from "../components/CarritoUI";
-import Boleta from "../components/VoucherUI"; // 🔹 Asegúrate de que la ruta es correcta
+import MetodoPago from "../components/molecules/MetodoPagoUI";
+import CarritoVentaUI from "../components/CarritoVentaUI";
+import Boleta from "../components/ComprobantePagoUI"; // 🔹 Asegúrate de que la ruta es correcta
 
 export default function Ventas() {
   const [clienteId, setClienteId] = useState(null);
@@ -28,7 +28,7 @@ export default function Ventas() {
       />
 
       {/* 🔹 Luego el carrito con productos */}
-      <CarritoUI 
+      <CarritoVentaUI 
         clienteId={clienteId} 
         setTotalCarrito={setTotalCarrito} 
         carrito={carrito} 

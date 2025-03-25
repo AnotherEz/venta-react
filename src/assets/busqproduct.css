@@ -11,7 +11,7 @@
 
 /* 📌 Lista de sugerencias */
 .lista-sugerencias {
-  position: absolute;
+  position: relative;
   top: calc(100 + 7px); /* Justo debajo del input */
   left: 15px;
   width: 97.5%; /* Mismo ancho que el input */
